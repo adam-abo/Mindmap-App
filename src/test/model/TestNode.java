@@ -59,7 +59,7 @@ public class TestNode {
         node1.constructChild("Yes Way!");
         assertEquals(2, node1.getChildren().size());
         assertEquals("No Way!", node1.getChildren().get(0).getNote());
-        assertEquals("Yes Way!", node2.getChildren().get(1).getNote());
+        assertEquals("Yes Way!", node1.getChildren().get(1).getNote());
     }
 
     @Test
@@ -100,6 +100,6 @@ public class TestNode {
     @Test
     void testSetNote() {
         node1.setnote("Hooray!");
-        assertEquals("Hooray", node1.getNote());
+        assertEquals("Hooray!", node1.getNote());
     }
 }

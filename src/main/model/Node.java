@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -9,30 +10,32 @@ A Node can be deleted (along with its children), as well have its note edited.
 */
 
 public class Node {
-    String note;
-    List<Node> children;
+    private String note;
+    private List<Node> children;
 
-    // EFFECTS: constructs a Node with the given note as the content of the node. The list of sub-nodes will be empty.
+    // EFFECTS: constructs a Node with the given note as the content of the node.
+    // The list of sub-nodes will be empty.
     public Node(String note) {
-        // stub
-    }
-
-    // MODIFIES: this
-    // EFFECTS: edits the content of the node's note
-    private void editNote() {
-
+        children = new ArrayList<>();
+        this.note = note;
     }
 
     // MODIFIES: this
     // EFFECTS: adds a sub-node that connects to this node
-    private void addNode() {
-
+    public void addChild(Node childNode) {
+        children.add(childNode);
     }
 
     // MODIFIES: this
-    // EFFECTS: deletes this node and all of its sub-nodes
-    private void delete() {
+    // EFFECTS: constructs and adds a sub-node that connects to this node
+    public void constructChild(String note) {
+        children.add(new Node(note));
+    }
 
+    // MODIFIES: this
+    // EFFECTS: deletes a child of this node and all of its sub-nodes
+    public void deleteChild(int index) {
+        children.remove(index);
     }
 
     public List<Node> getChildren() {
