@@ -1,52 +1,29 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
 The Node class represents the nodes of the mind map, with each Node having a text note.
 Each node can have sub-nodes added to it, which are listed as children.
+Each node has an Id and a list of its ancestors.
 A Node can be deleted (along with its children), as well have its note edited.
 */
 
-public class Node {
-    private String note;
-    private List<Node> children;
+public class Node extends Parent {
+    private int id;
 
     // EFFECTS: constructs a Node with the given note as the content of the node.
     // The list of sub-nodes will be empty.
-    public Node(String note) {
-        children = new ArrayList<>();
-        this.note = note;
+    public Node(String note, List<Parent> path) {
+        super(note, path);
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds a sub-node that connects to this node
-    public void addChild(Node childNode) {
-        children.add(childNode);
+    public int getId() {
+        return id;
     }
 
-    // MODIFIES: this
-    // EFFECTS: constructs and adds a sub-node that connects to this node
-    public void constructChild(String note) {
-        children.add(new Node(note));
+    public void setId(int id) {
+        this.id = id;
     }
 
-    // MODIFIES: this
-    // EFFECTS: deletes a child of this node and all of its sub-nodes
-    public void deleteChild(int index) {
-        children.remove(index);
-    }
-
-    public List<Node> getChildren() {
-        return children;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setnote(String note) {
-        this.note = note;
-    }
 }
