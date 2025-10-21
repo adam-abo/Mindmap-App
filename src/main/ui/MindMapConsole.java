@@ -5,19 +5,18 @@ import model.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
 /*  
 * This class is responsible for both user control over the mindmap, as well as being the root node for all child nodes.
 * It extends Parent's behaviour of having children.
 */
-public class MindMapConsole extends Parent {
-    protected Scanner scanner;
+public class MindMapConsole {
+    private Scanner scanner;
     private boolean isRunning;
-    private Parent selected;
+    private MindMap mindMap;
 
     public MindMapConsole() {
         isRunning = true;
-        selected = this;
+        mindMap = new MindMap();
         scanner = new Scanner(System.in);
         intro();
 
@@ -29,12 +28,12 @@ public class MindMapConsole extends Parent {
     // MODIFIES: this, Parent
     // EFFECTS: this method is responsible for the actions of the program
     // A title/note is displayed, then the children of the selected node
-    // then the user controls are display, then they are processed after input.
+    // then the user controls are displayed, then they are processed after input.
     public void action() {
-        if (selected.getPath().size() <= 1) {
-            print("Mindmap Title: " + selected.getContent());
+        if (mindMap.getSelected().equals(mindMap)) {
+            print("Mindmap Title: " + mindMap.getContent());
         } else {
-            print("Note: " + selected.getContent());
+            print("Note: " + mindMap.getSelected().getContent());
         }
 
         displayChildren();
@@ -46,13 +45,13 @@ public class MindMapConsole extends Parent {
     // EFFECTS: first message asks the user to title their mindmap
     public void intro() {
         print("Please begin by titling your mindmap:");
-        selected.setContent(scanner.nextLine());
+        mindMap.setContent(scanner.nextLine());
     }
 
-    // EFFECTS: displays both the content of selected node and its children
+    // EFFECTS: displays the sub-notes of the current selected node
     public void displayChildren() {
         print("\nSub-notes: ");
-        for (Node node : selected.getChildren()) {
+        for (Note node : mindMap.getSelected().getChildren()) {
             print("- " + node.getContent());
         }
     }
@@ -63,7 +62,7 @@ public class MindMapConsole extends Parent {
         print("Select an option:\n");
         print("a: Add a new connected sub-note");
         print("b: Go back to the previous node");
-        print("s: Select a sub-note to expand and add sub-notes to it");
+        print("s: Select a sub-note to expand its contents");
         print("d: Select and delete a sub-note and its branch");
         print("q: Quit the program\n");
     }
@@ -73,16 +72,16 @@ public class MindMapConsole extends Parent {
     public void processInput(String input) {
         switch (input) {
             case "a":
-                addChild();
+                addNote();
                 break;
             case "b":
                 back();
                 break;
             case "s":
-                selectChild();
+                selectNote();
                 break;
             case "d":
-                delChild();
+                deleteNote();
                 break;
             case "q":
                 quit();
@@ -93,49 +92,47 @@ public class MindMapConsole extends Parent {
         divider();
     }
 
-    // MODIFIES: this, Parent
+    // MODIFIES: mindMap
     // EFFECTS: adds a child with inputted user content to the selected node
-    public void addChild() {
+    public void addNote() {
         print("Please enter the content of the new note: ");
         String content = scanner.nextLine();
-        selected.constructChild(content);
+        mindMap.constructChildOfSelected(content);
     }
 
-    // MODIFIES: this, Parent
+    // MODIFIES: mindMap
     // EFFECTS: deletes a child of the currently selected node
     // If list of children is empty, warn user
     // If index inputted is out of bounds, warn user
-    public void delChild() {
+    public void deleteNote() {
         try {
-            selected.deleteChild(selectIndex());
+            mindMap.delChildOfSelected(selectIndex());
         } catch (IndexOutOfBoundsException e) {
             print("Index is out of bounds");
         } catch (NoChildrenException e) {
-            print("This node has no sub-nodes to select");
+            print("This node has no sub-notes to select");
         }
     }
 
-    // MODIFIES: this, Parent
+    // MODIFIES: mindMap
     // EFFECTS: selects a sub-node via user inputted index
-    // If list of children is empty, warn user
     // If index inputted is out of bounds, warn user
-    public void selectChild() {
+    // If list of children is empty, warn user
+    public void selectNote() {
         try {
-            selected = selected.getChildren().get(selectIndex());
+            mindMap.selectChildOfSelected(selectIndex());
         } catch (IndexOutOfBoundsException e) {
             print("Index is out of bounds");
-            selectChild();
         } catch (NoChildrenException e) {
-            print("This node has no sub-nodes to select");
+            print("This node has no sub-notes to select");
         }
     }
 
     // REQUIRES: input must not include whitespace
     // EFFECTS: returns a valid user-inputted index
     // If list of children is empty, throws NoChildrenException instead
-    // If index inputted is out of bounds, throws IndexOutOfBoundsException
-    public int selectIndex() throws NoChildrenException, IndexOutOfBoundsException {
-        if (selected.getChildren().size() > 0) {
+    public int selectIndex() throws NoChildrenException {
+        if (mindMap.getSelected().getChildren().size() > 0) {
             print("Select the note by its index");
 
             while (true) {
@@ -143,7 +140,7 @@ public class MindMapConsole extends Parent {
                     int input = scanner.nextInt();
                     scanner.nextLine();
 
-                    if (input >= selected.getChildren().size()) {
+                    if (input >= mindMap.getSelected().getChildren().size()) {
                         throw new IndexOutOfBoundsException();
                     }
                     return input;
@@ -157,12 +154,13 @@ public class MindMapConsole extends Parent {
         }
     }
 
-    // MODIFIES: this
-    // EFFECTS: selects the parent of the current selected node if possible
+    // MODIFIES: mindMap
+    // EFFECTS: selects the parent of the current selected node if possible,
+    // otherwise prints a warning
     private void back() {
-        if (selected.getPath().size() > 1) {
-            selected = selected.getPath().get(selected.getPath().size() - 2);
-        } else {
+        try {
+            mindMap.selectParentOfSelected();
+        } catch (IndexOutOfBoundsException e) {
             print("Cannot go back further, this is the start of the mindmap!");
         }
     }
@@ -175,12 +173,16 @@ public class MindMapConsole extends Parent {
     }
 
     // EFFECTS: simplifies the println call
-    public  void print(String txt){
+    private void print(String txt) {
         System.out.println(txt);
     }
 
     // EFFECTS: prints a line of dashes for improved readability
     private void divider() {
         print("----------------------------------");
+    }
+
+    public boolean getIsRunning() {
+        return isRunning;
     }
 }
