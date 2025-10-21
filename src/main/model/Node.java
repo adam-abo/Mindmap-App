@@ -1,29 +1,70 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/*
-The Node class represents the nodes of the mind map, with each Node having a text note.
-Each node can have sub-nodes added to it, which are listed as children.
-Each node has an Id and a list of its ancestors.
-A Node can be deleted (along with its children), as well have its note edited.
-*/
+public abstract class Node {
+    protected String content;
+    protected List<Note> children;
+    protected List<Node> path;
 
-public class Node extends Parent {
-    private int id;
+    // EFFECTS: constructs a Parent with the given content and path.
+    // The list of children will be empty.
+    public Node(String content, List<Node> path) {
+        children = new ArrayList<>();
 
-    // EFFECTS: constructs a Node with the given note as the content of the node.
-    // The list of sub-nodes will be empty.
-    public Node(String note, List<Parent> path) {
-        super(note, path);
+        this.content = content;
+        setPath(path);
+        this.path.add(this);
     }
 
-    public int getId() {
-        return id;
+    // EFFECTS: constructs a Parent with no content.
+    // The list of children and path will be empty.
+    public Node() {
+        children = new ArrayList<>();
+        path = new ArrayList<>();
+        this.path.add(this);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    // MODIFIES: this
+    // EFFECTS: constructs and adds a sub-node that connects to this parent
+    public void constructChild(String content) {
+        Note child = new Note(content, path);
+        children.add(child);
+        child.setId(children.size() - 1);
     }
 
+    // MODIFIES: this
+    // EFFECTS: deletes a child of this parent and all of the child's children
+    public void deleteChild(int index) {
+        children.remove(index);
+        for (int i = index; i < children.size(); i++) {
+            children.get(index).setId(index);
+        }
+    }
+
+    // EFFECTS: returns the child at the given index
+    public Node getChild(int index) {
+        return children.get(index);
+    }
+
+    public List<Note> getChildren() {
+        return children;
+    }
+
+    public List<Node> getPath(){
+        return path;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setPath(List<Node> path){
+        this.path = new ArrayList<>(path);
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
