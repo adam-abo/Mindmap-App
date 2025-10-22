@@ -8,25 +8,35 @@ import java.util.List;
 */
 public class MindMap extends Node {
     private Node selected;
+    private Note movingNote;
 
     public MindMap() {
         super();
         selected = this;
     }
 
-    // MODIFIES: this, Parent
+    // MODIFIES: this
     // EFFECTS: adds a child with inputted user content to the selected node
     public void constructChildOfSelected(String content) {
         selected.constructChild(content);
     }
 
-    // MODIFIES: this, Parent
+    // MODIFIES: this, Note
     // EFFECTS: deletes a child of the currently selected node
-    public void delChildOfSelected(int index) {
-        selected.deleteChild(index);
+    public Note delChildOfSelected(int index) {
+        return selected.deleteChild(index);
     }
 
-    // MODIFIES: this, Parent
+    // REQUIRES: movingNote is not null
+    // MODIFIES: this, Note
+    // EFFECTS: attatches the movingNote to the current selected Note,
+    // configures the path of movingNote and its children to account for the move
+    public void moveNote() {
+        selected.addChild(movingNote);
+        movingNote = null;
+    }
+
+    // MODIFIES: this, Note
     // EFFECTS: selects a sub-node via user inputted index
     public void selectChildOfSelected(int index) {
         selected = selected.getChild(index);
@@ -40,8 +50,16 @@ public class MindMap extends Node {
         selected = path.get(path.size() - 2);
     }
 
+    public void setMovingNote(Note note) {
+        movingNote = note;
+    }
+
     public void setSelected(Node selected) {
         this.selected = selected;
+    }
+
+    public Note getMovingNote() {
+        return movingNote;
     }
 
     public Node getSelected() {

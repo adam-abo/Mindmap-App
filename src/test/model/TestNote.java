@@ -10,20 +10,41 @@ import org.junit.jupiter.api.Test;
 
 public class TestNote {
     Note noteA;
+    List<Node> pathA;
 
     @BeforeEach
     void runBefore() {
-        noteA = new Note("A", new ArrayList<Node>());
+        noteA = new Note("A");
+        pathA = new ArrayList<>();
+
         noteA.setId(0);
+        pathA.add(noteA);
+        noteA.setPath(pathA);
     }
 
     @Test
     void testConstructor() {
-        assertEquals(0, noteA.getChildren().size());
-        assertEquals("A", noteA.getContent());
+        Note noteB = new Note("B");
+        assertEquals(0, noteB.getChildren().size());
+        assertEquals("B", noteB.getContent());
 
-        assertEquals(1, noteA.getPath().size());
-        assertEquals(noteA, noteA.getPath().get(0));
+        assertNull(noteB.getPath());
+        assertEquals(0, noteB.getId());
+    }
+
+    @Test
+    void testAddChildMultiple() {
+        Note noteB = new Note("B");
+        Note noteC = new Note("C");
+        noteA.addChild(noteB);
+        noteA.addChild(noteC);
+
+        assertEquals(2, noteA.getChildren().size());
+        assertEquals("B", noteA.getChildren().get(0).getContent());
+        assertEquals("C", noteA.getChildren().get(1).getContent());
+
+        idCheckAll(noteA);
+        pathCheckAll(noteA, noteA.path);
     }
 
     @Test

@@ -9,6 +9,7 @@ import java.util.Scanner;
 * This class is responsible for both user control over the mindmap, as well as being the root node for all child nodes.
 * It extends Parent's behaviour of having children.
 */
+
 public class MindMapConsole {
     private Scanner scanner;
     private boolean isRunning;
@@ -38,7 +39,11 @@ public class MindMapConsole {
 
         displayChildren();
         displayControls();
-        processInput(scanner.nextLine());
+        if (mindMap.getMovingNote() == null) {
+            processInput(scanner.nextLine());
+        } else {
+            processInputMoving(scanner. nextLine());
+        }
     }
 
     // MODIFIES: this
@@ -60,10 +65,15 @@ public class MindMapConsole {
     public void displayControls() {
         divider();
         print("Select an option:\n");
-        print("a: Add a new connected sub-note");
-        print("b: Go back to the previous node");
+        if (mindMap.getMovingNote() == null) {
+            print("a: Add a new connected sub-note");
+            print("d: Select and delete a sub-note and its branch");
+            print("m: Select a sub-node to cut and paste it elsewhere");
+        } else {
+            print("m: Paste the previously cut note under this current note");
+        }
         print("s: Select a sub-note to expand its contents");
-        print("d: Select and delete a sub-note and its branch");
+        print("b: Go back to the previous node");
         print("q: Quit the program\n");
     }
 
@@ -74,14 +84,39 @@ public class MindMapConsole {
             case "a":
                 addNote();
                 break;
-            case "b":
-                back();
+            case "d":
+                deleteNote();
+                break;
+            case "m":
+                move();
                 break;
             case "s":
                 selectNote();
                 break;
-            case "d":
-                deleteNote();
+            case "b":
+                back();
+                break;
+            case "q":
+                quit();
+                break;
+            default:
+                System.out.println("Invalid input, try again.");
+        }
+        divider();
+    }
+
+    // MODIFIES: this, Parent
+    // EFFECTS: processes the user's input while moving a node
+    public void processInputMoving(String input) {
+        switch (input) {
+            case "m":
+                move();
+                break;
+            case "s":
+                selectNote();
+                break;
+            case "b":
+                back();
                 break;
             case "q":
                 quit();
@@ -98,6 +133,22 @@ public class MindMapConsole {
         print("Please enter the content of the new note: ");
         String content = scanner.nextLine();
         mindMap.constructChildOfSelected(content);
+    }
+
+    // MODIFIES: mindMap
+    // EFFECTS: lets the user cut and paste a node to a different location
+    public void move() {
+        try {
+            if (mindMap.getMovingNote() != null) {
+                mindMap.moveNote();
+            } else {
+                mindMap.setMovingNote(mindMap.delChildOfSelected(selectIndex()));
+            }
+        } catch (IndexOutOfBoundsException e) {
+            print("Index is out of bounds");
+        } catch (NoChildrenException e) {
+            print("This node has no sub-notes to select");
+        }
     }
 
     // MODIFIES: mindMap

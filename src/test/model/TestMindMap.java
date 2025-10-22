@@ -23,6 +23,7 @@ public class TestMindMap {
         assertEquals(mm, mm.getSelected());
         assertEquals(0, mm.getChildren().size());
         assertNull(mm.getContent());
+        assertNull(mm.getMovingNote());
 
         assertEquals(1, mm.getPath().size());
         assertEquals(mm, mm.getPath().get(0));
@@ -250,6 +251,27 @@ public class TestMindMap {
     void testSetContent() {
         mm.setContent("Hooray!");
         assertEquals("Hooray!", mm.getContent());
+    }
+
+    @Test
+    void testMoveNote() {
+        Note noteA = new Note("A");
+        noteA.setPath(new ArrayList<>());
+        noteA.constructChild("B");
+        noteA.constructChild("C");
+        
+        mm.setMovingNote(noteA);
+        mm.moveNote();
+
+        assertEquals(1, mm.getChildren().size());
+        assertEquals(2, mm.getSelected().getChild(0).getChildren().size());
+        assertEquals("A", mm.getChild(0).getContent());
+        assertEquals("B", mm.getChild(0).getChild(0).getContent());
+        assertEquals("C", mm.getChild(0).getChild(1).getContent());
+        assertNull(mm.getMovingNote());
+
+        idCheckAll(mm);
+        pathCheckAll(mm, mm.getPath());
     }
 
     // The following methods are run at the end of each test as a general check that the path and id of the 

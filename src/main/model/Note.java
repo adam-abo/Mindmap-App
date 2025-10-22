@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 /*
 The Node class represents the nodes of the mind map, with each Node having a text note.
 Each node can have sub-nodes added to it, which are listed as children.
@@ -14,8 +12,8 @@ public class Note extends Node {
 
     // EFFECTS: constructs a Node with the given note as the content of the node.
     // The list of sub-nodes will be empty.
-    public Note(String note, List<Node> path) {
-        super(note, path);
+    public Note(String note) {
+        super(note);
     }
 
     public int getId() {

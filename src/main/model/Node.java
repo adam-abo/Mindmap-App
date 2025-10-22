@@ -10,12 +10,10 @@ public abstract class Node {
 
     // EFFECTS: constructs a Parent with the given content and path.
     // The list of children will be empty.
-    public Node(String content, List<Node> path) {
+    public Node(String content) {
         children = new ArrayList<>();
 
         this.content = content;
-        setPath(path);
-        this.path.add(this);
     }
 
     // EFFECTS: constructs a Parent with no content.
@@ -29,22 +27,44 @@ public abstract class Node {
     // MODIFIES: this
     // EFFECTS: constructs and adds a sub-node that connects to this parent
     public void constructChild(String content) {
-        Note child = new Note(content, path);
-        children.add(child);
-        child.setId(children.size() - 1);
+        Note child = new Note(content);
+        addChild(child);
     }
 
     // MODIFIES: this
     // EFFECTS: deletes a child of this parent and all of the child's children
-    public void deleteChild(int index) {
-        children.remove(index);
+    public Note deleteChild(int index) {
+        Note deleted = children.remove(index);
         for (int i = index; i < children.size(); i++) {
             children.get(index).setId(index);
+        }
+
+        return deleted;
+    }
+
+    public void addChild(Note child) {
+        children.add(child);
+        child.setId(children.size() - 1);
+        child.setPath(path);
+        child.getPath().add(child);
+        child.pathIdUpdate(child.getPath());
+    }
+
+    // EFFECTS: update all Nodes branching from a given Node to have paths built from the given Node
+    public void pathIdUpdate(List<Node> path) {
+        for (int i = 0; i < children.size(); i++) {
+            Note child = children.get(i);
+            List<Node> childPath = new ArrayList<>(path);
+
+            child.setId(i);
+            childPath.add(child);
+            child.setPath(childPath);
+            child.pathIdUpdate(childPath);
         }
     }
 
     // EFFECTS: returns the child at the given index
-    public Node getChild(int index) {
+    public Note getChild(int index) {
         return children.get(index);
     }
 
@@ -52,7 +72,7 @@ public abstract class Node {
         return children;
     }
 
-    public List<Node> getPath(){
+    public List<Node> getPath() {
         return path;
     }
 
@@ -60,7 +80,7 @@ public abstract class Node {
         return content;
     }
 
-    public void setPath(List<Node> path){
+    public void setPath(List<Node> path) {
         this.path = new ArrayList<>(path);
     }
 
