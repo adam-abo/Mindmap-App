@@ -69,8 +69,8 @@ public abstract class Node implements Writable {
         }
     }
 
+    // Citation: JsonSerializationDemo's Workroom toJson() method was used as the base for this method
     @Override
-    // 
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("content", content);
@@ -78,6 +78,7 @@ public abstract class Node implements Writable {
         return json;
     }
 
+    // Citation: JsonSerializationDemo's Workroom thingiesToJson() method was used as the base for this method
     // EFFECTS: returns notes under this Node as a JSON array
     private JSONArray notesToJson() {
         JSONArray jsonArray = new JSONArray();

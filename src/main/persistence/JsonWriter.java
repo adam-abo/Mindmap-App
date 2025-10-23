@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 
+// Citation: this class is a modification of the JsonWriter class from JsonSerializationDemo
 // Represents a writer that writes JSON representation of mindmap to file
 public class JsonWriter {
     private static final int TAB = 4;

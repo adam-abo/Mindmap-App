@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
+// Citation: this class is a modification of the JsonReader class from JsonSerializationDemo
 // Represents a reader that reads mindmap from JSON data stored in file
 public class JsonReader {
     private String source;
