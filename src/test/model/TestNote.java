@@ -1,6 +1,7 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.*;
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@ExcludeFromJacocoGeneratedReport
 public class TestNote {
     Note noteA;
     List<Node> pathA;
@@ -150,7 +152,7 @@ public class TestNote {
         assertEquals("Hooray!", noteA.getContent());
     }
 
-    // The following methods are run at the end of each test as a general check that the path and id of all the notes is sound
+    // These methods are run at the end of each test as a general check that the path and id of all the notes is sound
 
     // EFFECTS: checks that all nodes branching from a Parent have correct Ids
     private void idCheckAll(Note note) {

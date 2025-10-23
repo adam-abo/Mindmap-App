@@ -1,6 +1,7 @@
 package model;
 
 import static org.junit.jupiter.api.Assertions.*;
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@ExcludeFromJacocoGeneratedReport
 public class TestMindMap {
     MindMap mm;
     Node selected;
@@ -259,7 +261,7 @@ public class TestMindMap {
         noteA.setPath(new ArrayList<>());
         noteA.constructChild("B");
         noteA.constructChild("C");
-        
+
         mm.setMovingNote(noteA);
         mm.moveNote();
 
@@ -274,7 +276,8 @@ public class TestMindMap {
         pathCheckAll(mm, mm.getPath());
     }
 
-    // The following methods are run at the end of each test as a general check that the path and id of the 
+    // The following methods are run at the end of each test as a general check that
+    // the path and id of the
     // entire mindmap structure is sound
 
     // EFFECTS: checks that all Notes branching from a Node have correct Ids
