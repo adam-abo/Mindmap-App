@@ -3,7 +3,12 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Node {
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import persistence.Writable;
+
+public abstract class Node implements Writable {
     protected String content;
     protected List<Note> children;
     protected List<Node> path;
@@ -62,6 +67,26 @@ public abstract class Node {
             child.setPath(childPath);
             child.pathIdUpdate(childPath);
         }
+    }
+
+    @Override
+    // 
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("content", content);
+        json.put("notes", notesToJson());
+        return json;
+    }
+
+    // EFFECTS: returns notes under this Node as a JSON array
+    private JSONArray notesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Note n : children) {
+            jsonArray.put(n.toJson());
+        }
+
+        return jsonArray;
     }
 
     // EFFECTS: returns the child at the given index

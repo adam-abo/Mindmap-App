@@ -65,5 +65,6 @@ public class JsonReader {
         String content = jsonObject.getString("content");
         Note note = new Note(content);
         node.addChild(note);
+        addNotes(note, jsonObject);
     }
 }

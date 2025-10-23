@@ -3,9 +3,12 @@ package model;
 import java.util.List;
 
 /*  
-* This class is responsible for controlling all the nodes of the mindmap, as well as being the root node for all child nodes.
+* This class is responsible for interacting all the nodes of the mindmap,
+* as well as being the root node for all child nodes. 
+* It  also keeps track of the current selected node.
 * It extends Parent's behaviour of having children.
 */
+
 public class MindMap extends Node {
     private Node selected;
     private Note movingNote;
