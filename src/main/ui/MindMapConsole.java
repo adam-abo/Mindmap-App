@@ -13,6 +13,9 @@ import java.util.Scanner;
 public class MindMapConsole {
     private Scanner scanner;
     private boolean isRunning;
+    private boolean isRootNode;
+    private boolean isChildrenEmpty;
+    private boolean isMoving;
     private MindMap mindMap;
 
     public MindMapConsole() {
@@ -31,7 +34,11 @@ public class MindMapConsole {
     // A title/note is displayed, then the children of the selected node
     // then the user controls are displayed, then they are processed after input.
     public void action() {
-        if (mindMap.getSelected().equals(mindMap)) {
+        isRootNode = (mindMap == mindMap.getSelected());
+        isChildrenEmpty = mindMap.getSelected().getChildren().isEmpty();
+        isMoving = (mindMap.getMovingNote() != null);
+
+        if (isRootNode) {
             print("Mindmap Title: " + mindMap.getContent());
         } else {
             print("Note: " + mindMap.getSelected().getContent());
@@ -39,11 +46,7 @@ public class MindMapConsole {
 
         displayChildren();
         displayControls();
-        if (mindMap.getMovingNote() == null) {
-            processInput(scanner.nextLine());
-        } else {
-            processInputMoving(scanner. nextLine());
-        }
+        processInput(scanner.nextLine());
     }
 
     // MODIFIES: this
@@ -65,64 +68,46 @@ public class MindMapConsole {
     public void displayControls() {
         divider();
         print("Select an option:\n");
-        if (mindMap.getMovingNote() == null) {
+        if (!isMoving) {
             print("a: Add a new connected sub-note");
-            print("d: Select and delete a sub-note and its branch");
-            print("m: Select a sub-node to cut and paste it elsewhere");
+            print("e: Edit the note");
+            if (!isChildrenEmpty) {
+                print("d: Select and delete a sub-note and its branch");
+                print("m: Select a sub-note to cut and paste it elsewhere");
+            }
         } else {
             print("m: Paste the previously cut note under this current note");
         }
-        print("s: Select a sub-note to expand its contents");
-        print("b: Go back to the previous node");
+        if (!isChildrenEmpty) {
+            print("s: Select a sub-note to expand its contents");
+        }
+        if (!isRootNode) {
+            print("b: Go back to the previous node");
+        }
         print("q: Quit the program\n");
     }
 
     // MODIFIES: this, Parent
     // EFFECTS: processes the user's input
     public void processInput(String input) {
-        switch (input) {
-            case "a":
-                addNote();
-                break;
-            case "d":
-                deleteNote();
-                break;
-            case "m":
-                move();
-                break;
-            case "s":
-                selectNote();
-                break;
-            case "b":
-                back();
-                break;
-            case "q":
-                quit();
-                break;
-            default:
-                System.out.println("Invalid input, try again.");
-        }
-        divider();
-    }
-
-    // MODIFIES: this, Parent
-    // EFFECTS: processes the user's input while moving a node
-    public void processInputMoving(String input) {
-        switch (input) {
-            case "m":
-                move();
-                break;
-            case "s":
-                selectNote();
-                break;
-            case "b":
-                back();
-                break;
-            case "q":
-                quit();
-                break;
-            default:
-                System.out.println("Invalid input, try again.");
+        if (input.equals("a") && !isMoving) {
+            addNote();
+        } else if (input.equals("e") && !isMoving) {
+            editNote();
+        } else if (input.equals("d") && !isMoving && !isChildrenEmpty) {
+            mindMap.delChildOfSelected(selectIndex());
+        } else if (input.equals("m") && !isMoving && !isChildrenEmpty) {
+            mindMap.setMovingNote(mindMap.delChildOfSelected(selectIndex()));
+        } else if (input.equals("m") && isMoving) {
+            mindMap.moveNote();
+        } else if (input.equals("s") && !isChildrenEmpty) {
+            mindMap.selectChildOfSelected(selectIndex());
+        } else if (input.equals("b") && !isRootNode) {
+            mindMap.selectParentOfSelected();
+        } else if (input.equals("q")) {
+            quit();
+        } else {
+            System.out.println("Invalid input, try again.");
         }
         divider();
     }
@@ -131,88 +116,35 @@ public class MindMapConsole {
     // EFFECTS: adds a child with inputted user content to the selected node
     public void addNote() {
         print("Please enter the content of the new note: ");
-        String content = scanner.nextLine();
-        mindMap.constructChildOfSelected(content);
+        mindMap.constructChildOfSelected(scanner.nextLine());
     }
 
     // MODIFIES: mindMap
-    // EFFECTS: lets the user cut and paste a node to a different location
-    public void move() {
-        try {
-            if (mindMap.getMovingNote() != null) {
-                mindMap.moveNote();
-            } else {
-                mindMap.setMovingNote(mindMap.delChildOfSelected(selectIndex()));
-            }
-        } catch (IndexOutOfBoundsException e) {
-            print("Index is out of bounds");
-        } catch (NoChildrenException e) {
-            print("This node has no sub-notes to select");
-        }
-    }
-
-    // MODIFIES: mindMap
-    // EFFECTS: deletes a child of the currently selected node
-    // If list of children is empty, warn user
-    // If index inputted is out of bounds, warn user
-    public void deleteNote() {
-        try {
-            mindMap.delChildOfSelected(selectIndex());
-        } catch (IndexOutOfBoundsException e) {
-            print("Index is out of bounds");
-        } catch (NoChildrenException e) {
-            print("This node has no sub-notes to select");
-        }
-    }
-
-    // MODIFIES: mindMap
-    // EFFECTS: selects a sub-node via user inputted index
-    // If index inputted is out of bounds, warn user
-    // If list of children is empty, warn user
-    public void selectNote() {
-        try {
-            mindMap.selectChildOfSelected(selectIndex());
-        } catch (IndexOutOfBoundsException e) {
-            print("Index is out of bounds");
-        } catch (NoChildrenException e) {
-            print("This node has no sub-notes to select");
-        }
+    // EFFECTS: edits the content of the current note
+    public void editNote() {
+        print("Please enter the new content of the note: ");
+        mindMap.getSelected().setContent(scanner.nextLine());
     }
 
     // REQUIRES: input must not include whitespace
     // EFFECTS: returns a valid user-inputted index
     // If list of children is empty, throws NoChildrenException instead
-    public int selectIndex() throws NoChildrenException {
-        if (mindMap.getSelected().getChildren().size() > 0) {
-            print("Select the note by its index");
+    public int selectIndex() {
+        print("Select the note by its index");
 
-            while (true) {
-                try {
-                    int input = scanner.nextInt();
-                    scanner.nextLine();
-
-                    if (input >= mindMap.getSelected().getChildren().size()) {
-                        throw new IndexOutOfBoundsException();
-                    }
-                    return input;
-                } catch (InputMismatchException e) {
-                    print("Not an integer, try again\n");
-                    scanner.nextLine();
-                }
+        while (true) {
+            try {
+                int input = scanner.nextInt();
+                scanner.nextLine();
+                mindMap.getSelected().getChildren().get(input);
+                return input;
+            } catch (InputMismatchException e) {
+                print("Not an integer, try again\n");
+                scanner.nextLine();
+            } catch (IndexOutOfBoundsException e) {
+                print("Index is out of bounds\n");
+                scanner.nextLine();
             }
-        } else {
-            throw new NoChildrenException();
-        }
-    }
-
-    // MODIFIES: mindMap
-    // EFFECTS: selects the parent of the current selected node if possible,
-    // otherwise prints a warning
-    private void back() {
-        try {
-            mindMap.selectParentOfSelected();
-        } catch (IndexOutOfBoundsException e) {
-            print("Cannot go back further, this is the start of the mindmap!");
         }
     }
 

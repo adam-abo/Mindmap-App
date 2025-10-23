@@ -50,7 +50,8 @@ public abstract class Node {
         child.pathIdUpdate(child.getPath());
     }
 
-    // EFFECTS: update all Nodes branching from a given Node to have paths built from the given Node
+    // EFFECTS: update all Nodes branching from a given Node to have paths built
+    // from the given Node
     public void pathIdUpdate(List<Node> path) {
         for (int i = 0; i < children.size(); i++) {
             Note child = children.get(i);
