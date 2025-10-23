@@ -1,16 +1,24 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 
 /*  
 * This class is responsible for both user control over the mindmap, as well as being the root node for all child nodes.
 * It extends Parent's behaviour of having children.
 */
 
+@ExcludeFromJacocoGeneratedReport
 public class MindMapConsole {
+    private static final String JSON_STORE = "./data/mindmap.json";
     private Scanner scanner;
     private boolean isRunning;
     private boolean isRootNode;
@@ -18,8 +26,13 @@ public class MindMapConsole {
     private boolean isMoving;
     private MindMap mindMap;
 
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
     public MindMapConsole() {
         isRunning = true;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         mindMap = new MindMap();
         scanner = new Scanner(System.in);
         intro();
@@ -84,6 +97,7 @@ public class MindMapConsole {
         if (!isRootNode) {
             print("b: Go back to the previous node");
         }
+        print("l: Load from file a previous the last saved state of the program");
         print("q: Quit the program\n");
     }
 
@@ -104,10 +118,12 @@ public class MindMapConsole {
             mindMap.selectChildOfSelected(selectIndex());
         } else if (input.equals("b") && !isRootNode) {
             mindMap.selectParentOfSelected();
+        } else if (input.equals("l")) {
+            loadMindMap();
         } else if (input.equals("q")) {
             quit();
         } else {
-            System.out.println("Invalid input, try again.");
+            print("Invalid input.");
         }
         divider();
     }
@@ -149,10 +165,37 @@ public class MindMapConsole {
     }
 
     // MODIFIES: this
-    // EFFECTS: prevents all future actions in order to stop the program
+    // EFFECTS: asks the user to whether they want to save the mindmap,
+    // then prevents all future actions in order to stop the program
     public void quit() {
-        print("Goodbye!");
-        this.isRunning = false;
+        print("Save the current mindmap? (y/n)");
+        String input = scanner.nextLine().toLowerCase();
+
+        switch (input) {
+            case "y":
+                saveMindMap();
+            case "n":
+                print("Goodbye!");
+                this.isRunning = false;
+                break;
+            default:
+                print("Invalid input, try again.");
+                quit();
+        }
+
+    }
+
+    // EFFECTS: saves the mindmap to file
+    private void saveMindMap() {
+
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads mindmap from file.
+    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset to null, as it would be somewhat
+    // strange for the user to have them persist
+    public void loadMindMap() {
+
     }
 
     // EFFECTS: simplifies the println call
