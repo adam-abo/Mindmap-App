@@ -208,6 +208,8 @@ public class MindMapConsole {
             print("Loaded " + mindMap.getContent() + " from " + JSON_STORE);
         } catch (IOException e) {
             print("Unable to read from file: " + JSON_STORE);
+        } catch (org.json.JSONException e) {
+            print("No saved data to load");
         }
     }
 
