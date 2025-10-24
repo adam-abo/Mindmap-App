@@ -1,8 +1,8 @@
 package persistence;
+
 import model.MindMap;
+
 import org.json.JSONObject;
-
-
 import java.io.*;
 
 // Citation: this class is a modification of the JsonWriter class from JsonSerializationDemo
