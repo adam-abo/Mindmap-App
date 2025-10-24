@@ -187,15 +187,28 @@ public class MindMapConsole {
 
     // EFFECTS: saves the mindmap to file
     private void saveMindMap() {
-
+        try {
+            jsonWriter.open();
+            jsonWriter.write(mindMap);
+            jsonWriter.close();
+            print("Saved " + mindMap.getContent() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            print("Unable to write to file: " + JSON_STORE);
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: loads mindmap from file.
-    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset to null, as it would be somewhat
-    // strange for the user to have them persist
+    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset, as it
+    // would be somewhat
+    // strange for the user to have their values persist
     public void loadMindMap() {
-
+        try {
+            mindMap = jsonReader.read();
+            print("Loaded " + mindMap.getContent() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            print("Unable to read from file: " + JSON_STORE);
+        }
     }
 
     // EFFECTS: simplifies the println call
