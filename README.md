@@ -10,7 +10,7 @@ This project is made for people who want to use a mind map style of note organiz
 ## User Stories:
 - As a user, I want to be able to add custom notes to my mind map.
 - As a user, I want to be able to view the notes that branch from a selected node.
-- As a user, I want to be able to move existing nodes.
-- As a user, I want to be able to delete existing notes.
+- As a user, I want to be able to edit existing nodes.
+- As a user, I want to be able to delete/move existing notes.
 - As a user, I want to be able to quit then choose whether I want to save my mind map.
 - As a user, I want to be ablt to load my saved mind map from file.

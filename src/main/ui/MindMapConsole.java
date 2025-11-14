@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 
 /*  
@@ -29,16 +31,21 @@ public class MindMapConsole {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    public MindMapConsole() {
+    public MindMapConsole(JFrame frame) {
         isRunning = true;
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-        mindMap = new MindMap();
         scanner = new Scanner(System.in);
+        mindMap = new MindMap();
         intro();
+        
+        NodeNetwork network = new NodeNetwork(mindMap);
+        frame.add(network);
+        frame.setVisible(true);
 
         while (isRunning) {
             action();
+            network.repaint();
         }
     }
 
