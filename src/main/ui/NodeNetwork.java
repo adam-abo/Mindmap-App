@@ -41,13 +41,15 @@ public class NodeNetwork extends JPanel {
             System.out.println("Clicked MAIN circle");
 
             int mods = e.getModifiersEx();
-            if ((mods & java.awt.event.MouseEvent.SHIFT_DOWN_MASK) != 0)
+            if ((mods & java.awt.event.MouseEvent.SHIFT_DOWN_MASK) != 0 && (mindMap.getMovingNote() != null)) {
                 System.out.println("Shift + Main Circle");
-            else if ((mods & java.awt.event.MouseEvent.CTRL_DOWN_MASK) != 0)
+                mindMap.moveNote();
+            } else if ((mods & java.awt.event.MouseEvent.CTRL_DOWN_MASK) != 0) {
                 System.out.println("Ctrl + Main Circle");
-            else
+                mindMap.getSelected().addChild(new Note("A"));
+            } else
                 System.out.println("Normal click on Main Circle");
-
+                // edit
             return;
         }
 
@@ -56,13 +58,14 @@ public class NodeNetwork extends JPanel {
                 System.out.println("Clicked CHILD #" + i);
 
                 int mods = e.getModifiersEx();
-                if ((mods & java.awt.event.MouseEvent.SHIFT_DOWN_MASK) != 0)
+                if ((mods & java.awt.event.MouseEvent.SHIFT_DOWN_MASK) != 0) {
                     System.out.println("Shift + Child " + i);
-                else if ((mods & java.awt.event.MouseEvent.CTRL_DOWN_MASK) != 0)
+                    mindMap.setMovingNote(mindMap.delChildOfSelected(i));
+                } else if ((mods & java.awt.event.MouseEvent.CTRL_DOWN_MASK) != 0) {
                     System.out.println("Ctrl + Child " + i);
-                else
-                    System.out.println("Normal click on Child " + i);
                     mindMap.setSelected(children.get(i));
+                } else
+                    System.out.println("Normal click on Child " + i);
                 return;
             }
         }
