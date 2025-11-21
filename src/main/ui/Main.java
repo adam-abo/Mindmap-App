@@ -11,13 +11,12 @@ import model.MindMap;
 public class Main {
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Mind Map");
-        MindMap mindMap = new MindMap();
 
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 700);
 
-        MindMapUI network = new MindMapUI(mindMap);
+        MindMapUI network = new MindMapUI(new MindMap());
         JPanel buttonPanel = new ButtonPanel(network);
 
         frame.add(network, BorderLayout.CENTER);

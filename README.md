@@ -8,9 +8,9 @@ This project is made for people who want to use a mind map style of note organiz
 - The second reason is that I recently have been playing a sizeable mystery/puzzle game where collecting and connecting information is important. Sometimes, you may notice a small detail in one part of the game that you won't actually need until hours later. I've been writing all the details in a notebook in a semi-organized manner, but now that I have pages upon pages of notes, it is getting increasingly difficult to recover specific bits of info quickly. Therefore, I'm hoping that when this project is done, I'll find it useful for organizing my notes on the game.
 
 ## User Stories:
-- As a user, I want to be able to add custom notes to my mind map.
+- As a user, I want to be able to add notes to my mind map.
 - As a user, I want to be able to view the notes that branch from a selected node.
 - As a user, I want to be able to edit existing nodes.
 - As a user, I want to be able to delete/move existing notes.
-- As a user, I want to be able to quit then choose whether I want to save my mind map.
+- As a user, I want to be able to save my mind map.
 - As a user, I want to be ablt to load my saved mind map from file.
