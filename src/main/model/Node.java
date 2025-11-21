@@ -17,7 +17,6 @@ public abstract class Node implements Writable {
     // The list of children will be empty.
     public Node(String content) {
         children = new ArrayList<>();
-
         this.content = content;
     }
 
@@ -26,6 +25,7 @@ public abstract class Node implements Writable {
     public Node() {
         children = new ArrayList<>();
         path = new ArrayList<>();
+        content = "My Mindmap";
         this.path.add(this);
     }
 

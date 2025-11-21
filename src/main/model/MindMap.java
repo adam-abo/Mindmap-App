@@ -47,10 +47,12 @@ public class MindMap extends Node {
 
     // REQUIRES: selected.getPath().size() > 1
     // MODIFIES: this
-    // EFFECTS: selects the parent of the current selected node if possible,
+    // EFFECTS: selects the parent of the current selected node if possible
     public void selectParentOfSelected() {
         List<Node> path = selected.getPath();
-        selected = path.get(path.size() - 2);
+        if (path.size() > 1){
+            selected = path.get(path.size() - 2);
+        }
     }
 
     public void setMovingNote(Note note) {

@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.swing.JFrame;
-
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 
 /*  
@@ -31,22 +29,12 @@ public class MindMapConsole {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    public MindMapConsole(JFrame frame) {
+    public MindMapConsole(MindMap mm) {
         isRunning = true;
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         scanner = new Scanner(System.in);
-        mindMap = new MindMap();
-        intro();
-        
-        NodeNetwork network = new NodeNetwork(mindMap);
-        frame.add(network);
-        frame.setVisible(true);
-
-        while (isRunning) {
-            action();
-            network.repaint();
-        }
+        mindMap = mm;
     }
 
     // MODIFIES: this, Parent
@@ -193,7 +181,7 @@ public class MindMapConsole {
     }
 
     // EFFECTS: saves the mindmap to file
-    private void saveMindMap() {
+    public void saveMindMap() {
         try {
             jsonWriter.open();
             jsonWriter.write(mindMap);
@@ -209,15 +197,17 @@ public class MindMapConsole {
     // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset, as it
     // would be somewhat
     // strange for the user to have their values persist
-    public void loadMindMap() {
+    public MindMap loadMindMap() {
         try {
             mindMap = jsonReader.read();
             print("Loaded " + mindMap.getContent() + " from " + JSON_STORE);
+            return mindMap;
         } catch (IOException e) {
             print("Unable to read from file: " + JSON_STORE);
         } catch (org.json.JSONException e) {
             print("No saved data to load");
         }
+        return null;
     }
 
     // EFFECTS: simplifies the println call
