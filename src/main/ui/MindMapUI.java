@@ -16,7 +16,8 @@ import java.awt.geom.Line2D;
 
 /*
  * This class handles ui of the mindmap network. It also contains the data of the mindmap structure.
- * Other classes that relate to ui, such as actions, usually contain a reference to this class.
+ * Other classes that relate to ui, such as actions, usually contain a reference to this class. 
+ * However, they cannot directly change any of the fields of this class.
  */
 public class MindMapUI extends JPanel {
 
@@ -81,17 +82,56 @@ public class MindMapUI extends JPanel {
         g2.setColor(Color.BLACK);
         g2.draw(childCircle);
 
-        drawCenteredString(g2, text, centerX + radius, centerY + radius);
+        drawCenteredString(g2, text, centerX + radius, centerY + radius, radius * 2 - 10);
         return childCircle;
     }
 
-    // EFFECTS: draws the text inside a node
-    private void drawCenteredString(Graphics2D g2, String text, int x, int y) {
+    // EFFECTS: draws the text inside each node centered to make the most of the
+    // space. Note that if there is too much text, then it will escape the node.
+    private void drawCenteredString(Graphics2D g2, String text, int x, int y, int maxWidth) {
         FontMetrics fm = g2.getFontMetrics();
-        int w = fm.stringWidth(text);
-        int h = fm.getAscent();
         g2.setColor(Color.BLACK);
-        g2.drawString(text, x - w / 2, y + h / 4);
+
+        List<String> lines = wrapText(text, fm, maxWidth);
+        int lineHeight = fm.getHeight();
+        int totalHeight = lines.size() * lineHeight;
+        int startY = y - totalHeight / 2 + fm.getAscent();
+
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            int w = fm.stringWidth(line);
+            g2.drawString(line, x - w / 2, startY + i * lineHeight);
+        }
+    }
+
+    // EFFECTS: returns a list of strings such that, when drawn, it fits inside a
+    // node
+    private List<String> wrapText(String text, FontMetrics fm, int maxWidth) {
+        List<String> lines = new ArrayList<>();
+        String[] words = text.split(" ");
+        String currentLine = "";
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+
+            if (currentLine.equals("")) {
+                currentLine = word;
+            } else {
+                String test = currentLine + " " + word;
+                if (fm.stringWidth(test) <= maxWidth) {
+                    currentLine = test;
+                } else {
+                    lines.add(currentLine);
+                    currentLine = word;
+                }
+            }
+        }
+
+        if (!currentLine.equals("")) {
+            lines.add(currentLine);
+        }
+
+        return lines;
     }
 
     // MODIFIES: this
