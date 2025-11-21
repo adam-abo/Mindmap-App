@@ -13,8 +13,7 @@ public class LoadAction extends AbstractAction {
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/mindmap.json";
 
-    public LoadAction(MindMap mindMap, MindMapUI network) {
-        this.mindMap = mindMap;
+    public LoadAction(MindMapUI network) {
         jsonReader = new JsonReader(JSON_STORE);
         this.network = network;
     }
@@ -25,8 +24,9 @@ public class LoadAction extends AbstractAction {
     // would be somewhat strange for the user to have their values persist
     @Override
     public void actionPerformed(ActionEvent e) {
+        mindMap = network.getMindMap();
         try {
-            mindMap = jsonReader.read();
+            network.setMindMap(jsonReader.read());
             System.out.println("Loaded " + mindMap.getContent() + " from " + JSON_STORE);
         } catch (IOException ioe) {
             System.out.println("Unable to read from file: " + JSON_STORE);

@@ -27,14 +27,14 @@ public class MindMapUI extends JPanel {
         this.mindMap = mindMap;
         setFocusable(true);
 
-        addMouseListener(new MouseAction(mainCircle, childCircles, children, this, mindMap));
+        addMouseListener(new MouseAction(this));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         setNode();
-        super.paintComponent(g);
         childCircles.clear();
+        super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -43,10 +43,12 @@ public class MindMapUI extends JPanel {
         int centerY = getHeight() / 2;
         int bigRadius = 70;
         int smallRadius = 40;
-        double angleStep = 2 * Math.PI / children.size();
         int distance = 180;
+        double angleStep = 2 * Math.PI / children.size();
 
-        drawMainCircle(g2, centerX - bigRadius, centerY - bigRadius, bigRadius, node.getContent());
+        // main circle
+        mainCircle = drawCircle(g2, new Color(90, 150, 255), centerX - bigRadius, centerY - bigRadius, bigRadius,
+                node.getContent());
 
         for (int i = 0; i < children.size(); i++) {
             double angle = i * angleStep;
@@ -59,36 +61,25 @@ public class MindMapUI extends JPanel {
                     centerY + bigRadius * Math.sin(angle), childX, childY));
 
             // child circle
-            drawChildren(g2, childX - smallRadius, childY - smallRadius, smallRadius, node.getContent());
+            childCircles.add(drawCircle(g2, new Color(255, 200, 90), childX - smallRadius, childY - smallRadius,
+                    smallRadius, node.getChild(i).getContent()));
         }
     }
 
-    // EFFECTS: draws a circle
-    private void drawMainCircle(Graphics2D g2, int centerX, int centerY, int radius, String text) {
-        mainCircle = new Ellipse2D.Double(centerX, centerY, 2 * radius, 2 * radius);
-
-        g2.setColor(new Color(90, 150, 255));
-        g2.fill(mainCircle);
-
-        g2.setColor(Color.BLACK);
-        g2.draw(mainCircle);
-
-        drawCenteredString(g2, text, centerX, centerY);
-    }
-
-    private void drawChildren(Graphics2D g2, int centerX, int centerY, int radius, String text) {
+    private Ellipse2D drawCircle(Graphics2D g2, Color color, int centerX, int centerY, int radius, String text) {
         Ellipse2D childCircle = new Ellipse2D.Double(centerX, centerY, 2 * radius, 2 * radius);
-        childCircles.add(childCircle);
 
-        g2.setColor(new Color(255, 200, 90));
+        g2.setColor(color);
         g2.fill(childCircle);
 
         g2.setColor(Color.BLACK);
         g2.draw(childCircle);
 
-        drawCenteredString(g2, text, centerX, centerY);
+        drawCenteredString(g2, text, centerX + radius, centerY + radius);
+        return childCircle;
     }
 
+    // EFFECTS: draws the text inside a node
     private void drawCenteredString(Graphics2D g2, String text, int x, int y) {
         FontMetrics fm = g2.getFontMetrics();
         int w = fm.stringWidth(text);
@@ -99,12 +90,29 @@ public class MindMapUI extends JPanel {
 
     // MODIFIES: this
     // EFFECTS: sets the current main node as the current selected node
-    public void setNode() {
+    private void setNode() {
         this.node = mindMap.getSelected();
         this.children = node.getChildren();
+        System.out.println(children.size());
     }
 
     public void setMindMap(MindMap mindMap) {
         this.mindMap = mindMap;
+    }
+
+    public MindMap getMindMap() {
+        return mindMap;
+    }
+
+    public List<Note> getChildren() {
+        return children;
+    }
+
+    public Ellipse2D getMainCircle() {
+        return mainCircle;
+    }
+
+    public List<Ellipse2D> getChildCircles() {
+        return childCircles;
     }
 }

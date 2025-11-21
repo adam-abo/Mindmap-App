@@ -5,15 +5,17 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import model.MindMap;
 import persistence.JsonWriter;
+import ui.MindMapUI;
 
 public class SaveAction extends AbstractAction {
+    private MindMapUI network;
     private MindMap mindMap;
     private JsonWriter jsonWriter;
     private static final String JSON_STORE = "./data/mindmap.json";
 
-    public SaveAction(MindMap mindMap) {
-        this.mindMap = mindMap;
+    public SaveAction(MindMapUI network) {
         jsonWriter = new JsonWriter(JSON_STORE);
+        this.network = network;
     }
 
     // MODIFIES: this
@@ -23,6 +25,7 @@ public class SaveAction extends AbstractAction {
     // strange for the user to have their values persist
     @Override
     public void actionPerformed(ActionEvent e) {
+        mindMap = network.getMindMap();
         try {
             jsonWriter.open();
             jsonWriter.write(mindMap);

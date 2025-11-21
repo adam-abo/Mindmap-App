@@ -6,8 +6,11 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import model.MindMap;
 import model.Note;
+import model.Node;
 import ui.MindMapUI;
 
 public class MouseAction extends MouseAdapter {
@@ -17,16 +20,16 @@ public class MouseAction extends MouseAdapter {
     private Ellipse2D mainCircle;
     private List<Ellipse2D> childCircles = new ArrayList<>();
 
-    public MouseAction(Ellipse2D mainCircle, List<Ellipse2D> childCircle, List<Note> children, MindMapUI network, MindMap mindMap) {
-        this.mainCircle = mainCircle;
-        this.childCircles = childCircle;
-        this.children = children;
+    public MouseAction(MindMapUI network) {
         this.network = network;
-        this.mindMap = mindMap;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        this.mainCircle = network.getMainCircle();
+        this.childCircles = network.getChildCircles();
+        this.children = network.getChildren();
+        this.mindMap = network.getMindMap();
         handleClick(e.getX(), e.getY(), e);
     }
 
@@ -54,7 +57,7 @@ public class MouseAction extends MouseAdapter {
             mindMap.getSelected().addChild(new Note("..."));
         } else {
             System.out.println("Normal click on Main Circle");
-            // edit
+            editNode(mindMap.getSelected());
         }
         network.repaint();
     }
@@ -68,8 +71,15 @@ public class MouseAction extends MouseAdapter {
             mindMap.setSelected(children.get(index));
         } else {
             System.out.println("Normal click on Child " + index);
-            // edit
+            editNode(mindMap.getSelected().getChild(index));
         }
         network.repaint();
+    }
+
+    private void editNode(Node node) {
+        String newText = JOptionPane.showInputDialog(network, "Edit text:", node.getContent());
+        if (newText != null) {
+            node.setContent(newText);
+        }
     }
 }
