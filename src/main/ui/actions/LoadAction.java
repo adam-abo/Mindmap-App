@@ -7,6 +7,7 @@ import model.MindMap;
 import persistence.JsonReader;
 import ui.MindMapUI;
 
+// Action class for pressing the load button
 public class LoadAction extends AbstractAction {
     private MindMap mindMap;
     private MindMapUI network;
@@ -18,10 +19,9 @@ public class LoadAction extends AbstractAction {
         this.network = network;
     }
 
-    // MODIFIES: this
+    // MODIFIES: network
     // EFFECTS: loads mindmap from file.
-    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset, as it
-    // would be somewhat strange for the user to have their values persist
+    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset
     @Override
     public void actionPerformed(ActionEvent e) {
         mindMap = network.getMindMap();

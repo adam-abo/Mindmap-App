@@ -7,6 +7,7 @@ import ui.actions.BackAction;
 import ui.actions.LoadAction;
 import ui.actions.SaveAction;
 
+// This panel just contains the three buttons at the top of the screen
 public class ButtonPanel extends JPanel{
 
     public ButtonPanel(MindMapUI network){

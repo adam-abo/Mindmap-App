@@ -7,6 +7,7 @@ import model.MindMap;
 import persistence.JsonWriter;
 import ui.MindMapUI;
 
+// Action class for pressing the save button
 public class SaveAction extends AbstractAction {
     private MindMapUI network;
     private MindMap mindMap;
@@ -18,11 +19,9 @@ public class SaveAction extends AbstractAction {
         this.network = network;
     }
 
-    // MODIFIES: this
+    // MODIFIES: network
     // EFFECTS: loads mindmap from file.
-    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset, as it
-    // would be somewhat
-    // strange for the user to have their values persist
+    // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset
     @Override
     public void actionPerformed(ActionEvent e) {
         mindMap = network.getMindMap();

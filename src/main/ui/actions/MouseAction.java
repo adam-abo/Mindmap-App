@@ -13,6 +13,7 @@ import model.Note;
 import model.Node;
 import ui.MindMapUI;
 
+// This class represents the actions that occur due to mouse clicks
 public class MouseAction extends MouseAdapter {
     private List<Note> children;
     private MindMapUI network;
@@ -24,6 +25,7 @@ public class MouseAction extends MouseAdapter {
         this.network = network;
     }
 
+    // EFFECTS: detects a mouseclick and sends needed info to be handled
     @Override
     public void mouseClicked(MouseEvent e) {
         this.mainCircle = network.getMainCircle();
@@ -33,6 +35,7 @@ public class MouseAction extends MouseAdapter {
         handleClick(e.getX(), e.getY(), e);
     }
 
+    // EFFECTS: decides which node was clicked (if any) and handles it appropriately
     private void handleClick(int mx, int my, MouseEvent e) {
         if (mainCircle != null && mainCircle.contains(mx, my)) {
             System.out.println("Clicked MAIN circle");
@@ -48,6 +51,12 @@ public class MouseAction extends MouseAdapter {
         }
     }
 
+    // MODIFIES: mindMap, network
+    // EFFECTS: handles the case of a click on the main node
+    // - if it's a shift-click, then attempt to paste a node as a new child to the
+    // main node
+    // - if it's a ctrl-click, then add a new child to the main node
+    // - otherwise, ask the user to edit the content of the node
     private void handleClickMain(MouseEvent e) {
         if (e.isShiftDown() && (mindMap.getMovingNote() != null) && children.size() < 15) {
             System.out.println("Shift + Main Circle");
@@ -62,6 +71,11 @@ public class MouseAction extends MouseAdapter {
         network.repaint();
     }
 
+    // MODIFIES: mindMap, network
+    // EFFECTS: handles the case of a click on a child node
+    // - if it's a shift-click, then cut that node and save it for pasting later
+    // - if it's a ctrl-click, then select and expand that node
+    // - otherwise, ask the user to edit the content of the node
     private void handleClickChild(MouseEvent e, int index) {
         if (e.isShiftDown()) {
             System.out.println("Shift + Child " + index);
@@ -76,6 +90,8 @@ public class MouseAction extends MouseAdapter {
         network.repaint();
     }
 
+    // MODIFIES: node
+    // EFFECTS: opens a text box for the user to edit the content of a given node
     private void editNode(Node node) {
         String newText = JOptionPane.showInputDialog(network, "Edit text:", node.getContent());
         if (newText != null) {
