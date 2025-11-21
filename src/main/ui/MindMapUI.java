@@ -14,6 +14,10 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 
+/*
+ * This class handles ui of the mindmap network. It also contains the data of the mindmap structure.
+ * Other classes that relate to ui, such as actions, usually contain a reference to this class.
+ */
 public class MindMapUI extends JPanel {
 
     private Node node;
@@ -30,10 +34,11 @@ public class MindMapUI extends JPanel {
         addMouseListener(new MouseAction(this));
     }
 
+    // MODIFIES: this
+    // EFFECTS:
     @Override
     protected void paintComponent(Graphics g) {
-        setNode();
-        childCircles.clear();
+        updateNode();
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
@@ -66,6 +71,7 @@ public class MindMapUI extends JPanel {
         }
     }
 
+    // EFFECTS: draws and returns a circle with the given arguments
     private Ellipse2D drawCircle(Graphics2D g2, Color color, int centerX, int centerY, int radius, String text) {
         Ellipse2D childCircle = new Ellipse2D.Double(centerX, centerY, 2 * radius, 2 * radius);
 
@@ -89,11 +95,12 @@ public class MindMapUI extends JPanel {
     }
 
     // MODIFIES: this
-    // EFFECTS: sets the current main node as the current selected node
-    private void setNode() {
+    // EFFECTS: updates the current node to the most recent selected node.
+    // also resets the information on child nodes/circles.
+    private void updateNode() {
         this.node = mindMap.getSelected();
         this.children = node.getChildren();
-        System.out.println(children.size());
+        childCircles.clear();
     }
 
     public void setMindMap(MindMap mindMap) {
