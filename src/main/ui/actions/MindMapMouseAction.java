@@ -55,7 +55,7 @@ public class MindMapMouseAction extends MouseAdapter {
     // EFFECTS: handles the case of a click on the main node
     // - if it's a shift-click, then attempt to paste a node as a new child to the
     // main node
-    // - if it's a ctrl-click, then add a new child to the main node
+    // - if it's a ctrl-click, then add a new child to the main node (max is 15)
     // - otherwise, ask the user to edit the content of the node
     private void handleClickMain(MouseEvent e) {
         if (e.isShiftDown() && (mindMap.getMovingNote() != null) && children.size() < 15) {

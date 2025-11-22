@@ -50,7 +50,7 @@ public class MindMap extends Node {
     // EFFECTS: selects the parent of the current selected node if possible
     public void selectParentOfSelected() {
         List<Node> path = selected.getPath();
-        if (path.size() > 1){
+        if (path.size() > 1) {
             selected = path.get(path.size() - 2);
         }
     }

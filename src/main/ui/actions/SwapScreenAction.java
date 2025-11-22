@@ -23,7 +23,7 @@ public class SwapScreenAction extends MouseAdapter {
     }
 
     // MODIFIES: this
-    // EFFECTS: closes this window and reveals the MindMap screen
+    // EFFECTS: closes the intro screen and reveals the MindMap screen
     private void swap() {
         closeFrame.setVisible(false);
         closeFrame.dispose();

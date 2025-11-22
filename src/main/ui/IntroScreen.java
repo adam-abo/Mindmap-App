@@ -6,14 +6,13 @@ import ui.actions.SwapScreenAction;
 
 import java.awt.*;
 
- // Constructs and organizes all the content on the intro screen
- // It is also responsible for hiding itself and showing the mindmap screen when the user clicks
+// Constructs and organizes all the content on the intro screen
+// It is also responsible for hiding itself and showing the mindmap screen when the user clicks
 public class IntroScreen extends JWindow {
-    JFrame frame;
+    JFrame mindMapFrame;
 
     public IntroScreen(JFrame frame) {
-        this.frame = frame;
-
+        this.mindMapFrame = frame;
         JPanel panel = createMainPanel();
 
         panel.add(Box.createVerticalGlue());
@@ -22,7 +21,7 @@ public class IntroScreen extends JWindow {
         panel.add(Box.createVerticalStrut(30));
         addInstructionLines(panel);
         panel.add(Box.createVerticalStrut(25));
-        panel.add(createLabel("Click anywhere to begin", 22, Font.PLAIN));
+        panel.add(createLabel("Click anywhere to begin!", 22, Font.PLAIN));
         panel.add(Box.createVerticalGlue());
 
         add(panel);
@@ -69,17 +68,19 @@ public class IntroScreen extends JWindow {
 
     // EFFECTS: adds all the intrusctions for use to the main panel
     private void addInstructionLines(JPanel panel) {
-        panel.add(createLabel("Ctrl-click on: center node to add new notes / child node to expand it", 18, Font.PLAIN));
+        panel.add(
+                createLabel("Ctrl-click on: center node to add new notes / child node to expand it.", 18, Font.PLAIN));
         panel.add(Box.createVerticalStrut(8));
-        panel.add(createLabel("Shift-click on: child node to cut it / center node to paste the last cut node once", 18, Font.PLAIN));
+        panel.add(createLabel("Shift-click on: child node to cut it / center node to paste the last cut node once.", 18,
+                Font.PLAIN));
         panel.add(Box.createVerticalStrut(8));
-        panel.add(createLabel("Click any node to edit its contents", 18, Font.PLAIN));
+        panel.add(createLabel("Click any node to edit its contents.", 18, Font.PLAIN));
     }
 
     // MODIFIES: this
     // EFFECTS: adds a mouseListener to detect a user click to swap screens
     public void showUntilClick() {
         setVisible(true);
-        addMouseListener(new SwapScreenAction(this, frame));
+        addMouseListener(new SwapScreenAction(this, mindMapFrame));
     }
 }
