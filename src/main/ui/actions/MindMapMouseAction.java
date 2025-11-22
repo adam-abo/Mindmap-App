@@ -13,15 +13,15 @@ import model.Note;
 import model.Node;
 import ui.MindMapUI;
 
-// This class represents the actions that occur due to mouse clicks
-public class MouseAction extends MouseAdapter {
+// This class represents the actions that occur due to mouse clicks on the Mindmap frame
+public class MindMapMouseAction extends MouseAdapter {
     private List<Note> children;
     private MindMapUI network;
     private MindMap mindMap;
     private Ellipse2D mainCircle;
     private List<Ellipse2D> childCircles = new ArrayList<>();
 
-    public MouseAction(MindMapUI network) {
+    public MindMapMouseAction(MindMapUI network) {
         this.network = network;
     }
 

@@ -5,7 +5,7 @@ import javax.swing.*;
 import model.MindMap;
 import model.Node;
 import model.Note;
-import ui.actions.MouseAction;
+import ui.actions.MindMapMouseAction;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -27,12 +27,11 @@ public class MindMapUI extends JPanel {
     private Ellipse2D mainCircle;
     private List<Ellipse2D> childCircles = new ArrayList<>();
 
-    public MindMapUI(MindMap mindMap) {
-        super();
-        this.mindMap = mindMap;
+    public MindMapUI() {
+        this.mindMap = new MindMap();
         setFocusable(true);
 
-        addMouseListener(new MouseAction(this));
+        addMouseListener(new MindMapMouseAction(this));
     }
 
     // MODIFIES: this

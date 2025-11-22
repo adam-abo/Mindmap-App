@@ -1,8 +1,10 @@
 package ui;
 
 import javax.swing.*;
+
+import ui.actions.SwapScreenAction;
+
 import java.awt.*;
-import java.awt.event.*;
 
  // Constructs and organizes all the content on the intro screen
  // It is also responsible for hiding itself and showing the mindmap screen when the user clicks
@@ -75,22 +77,9 @@ public class IntroScreen extends JWindow {
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a mouseListener to detect a user click to close the screen
+    // EFFECTS: adds a mouseListener to detect a user click to swap screens
     public void showUntilClick() {
         setVisible(true);
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                close();
-            }
-        });
-    }
-
-    // MODIFIES: this
-    // EFFECTS: closes this window and reveals the MindMap screen
-    public void close() {
-        setVisible(false);
-        dispose();
-        frame.setVisible(true);
+        addMouseListener(new SwapScreenAction(this, frame));
     }
 }
