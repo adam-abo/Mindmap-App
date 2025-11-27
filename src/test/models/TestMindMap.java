@@ -1,7 +1,10 @@
-package model;
+package models;
 
 import static org.junit.jupiter.api.Assertions.*;
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
+import model.MindMap;
+import model.Node;
+import model.Note;
 
 import java.util.ArrayList;
 import java.util.List;

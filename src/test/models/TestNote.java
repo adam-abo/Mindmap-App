@@ -1,7 +1,9 @@
-package model;
+package models;
 
 import static org.junit.jupiter.api.Assertions.*;
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
+import model.Node;
+import model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class TestNote {
         assertEquals("C", noteA.getChildren().get(1).getContent());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -56,7 +58,7 @@ public class TestNote {
         assertEquals("B", noteA.getChildren().get(0).getContent());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -68,7 +70,7 @@ public class TestNote {
         assertEquals("C", noteA.getChildren().get(1).getContent());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -83,7 +85,7 @@ public class TestNote {
         assertEquals("C", nodeB.getChildren().get(0).getContent());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -99,7 +101,7 @@ public class TestNote {
         assertEquals("C", nodeB.getChildren().get(0).getContent());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -112,7 +114,7 @@ public class TestNote {
         assertEquals("C", noteA.getChildren().get(0).getContent());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -128,7 +130,7 @@ public class TestNote {
         assertEquals(0, noteA.getChildren().size());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test
@@ -143,7 +145,7 @@ public class TestNote {
         assertEquals(0, nodeB.getChildren().size());
 
         idCheckAll(noteA);
-        pathCheckAll(noteA, noteA.path);
+        pathCheckAll(noteA, noteA.getPath());
     }
 
     @Test

@@ -38,12 +38,10 @@ public class MindMapMouseAction extends MouseAdapter {
     // EFFECTS: decides which node was clicked (if any) and handles it appropriately
     private void handleClick(int mx, int my, MouseEvent e) {
         if (mainCircle != null && mainCircle.contains(mx, my)) {
-            System.out.println("Clicked MAIN circle");
             handleClickMain(e);
         } else {
             for (int i = 0; i < childCircles.size(); i++) {
                 if (childCircles.get(i).contains(mx, my)) {
-                    System.out.println("Clicked CHILD #" + i);
                     handleClickChild(e, i);
                     break;
                 }
@@ -59,13 +57,10 @@ public class MindMapMouseAction extends MouseAdapter {
     // - otherwise, ask the user to edit the content of the node
     private void handleClickMain(MouseEvent e) {
         if (e.isShiftDown() && (mindMap.getMovingNote() != null) && children.size() < 15) {
-            System.out.println("Shift + Main Circle");
             mindMap.moveNote();
         } else if (e.isControlDown() && children.size() < 15) {
-            System.out.println("Ctrl + Main Circle");
             mindMap.getSelected().addChild(new Note("..."));
         } else {
-            System.out.println("Normal click on Main Circle");
             editNode(mindMap.getSelected());
         }
         network.repaint();
@@ -78,13 +73,10 @@ public class MindMapMouseAction extends MouseAdapter {
     // - otherwise, ask the user to edit the content of the node
     private void handleClickChild(MouseEvent e, int index) {
         if (e.isShiftDown()) {
-            System.out.println("Shift + Child " + index);
             mindMap.setMovingNote(mindMap.delChildOfSelected(index));
         } else if (e.isControlDown()) {
-            System.out.println("Ctrl + Child " + index);
             mindMap.setSelected(children.get(index));
         } else {
-            System.out.println("Normal click on Child " + index);
             editNode(mindMap.getSelected().getChild(index));
         }
         network.repaint();

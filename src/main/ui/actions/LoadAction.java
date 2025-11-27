@@ -27,7 +27,6 @@ public class LoadAction extends AbstractAction {
         mindMap = network.getMindMap();
         try {
             network.setMindMap(jsonReader.read());
-            System.out.println("Loaded " + mindMap.getContent() + " from " + JSON_STORE);
         } catch (IOException ioe) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         } catch (org.json.JSONException jsone) {

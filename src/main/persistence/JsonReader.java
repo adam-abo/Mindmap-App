@@ -2,6 +2,8 @@ package persistence;
 
 import model.Note;
 import model.Node;
+import model.Event;
+import model.EventLog;
 import model.MindMap;
 
 import java.io.IOException;
@@ -27,6 +29,8 @@ public class JsonReader {
     public MindMap read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
+
+        EventLog.getInstance().logEvent(new Event("Loaded from " + source));
         return parseMindMap(jsonObject);
     }
 

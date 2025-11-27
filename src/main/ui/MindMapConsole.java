@@ -1,6 +1,5 @@
 package ui;
 
-import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -10,6 +9,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
+import model.MindMap;
+import model.Note;
 
 /*  
 * This class is responsible for both user control over the mindmap, as well as being the root node for all child nodes.
