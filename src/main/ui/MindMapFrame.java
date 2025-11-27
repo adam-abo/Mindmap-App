@@ -6,9 +6,11 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import ui.actions.PrintLogAction;
 
 // This is the main frame where the MindMapUI and buttons exist
+@ExcludeFromJacocoGeneratedReport
 public class MindMapFrame extends JFrame {
     MindMapFrame(String title) {
         super(title);

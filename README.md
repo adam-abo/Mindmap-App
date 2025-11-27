@@ -14,3 +14,12 @@ This project is made for people who want to use a mind map style of note organiz
 - As a user, I want to be able to delete/move existing notes.
 - As a user, I want to be able to save my mind map.
 - As a user, I want to be ablt to load my saved mind map from file.
+
+## Phase 4: Task 2
+- Saving the save button.
+- Loading using the load button.
+- Add new child node by CTRL-clicking the center node.
+- Selecting a child node by CTRL-clicking it.
+- Cut child node by SHIFT-clicking it.
+- Paste last cut node once by SHIFT-clicking the center node.
+- Edit a node's content by clicking it.

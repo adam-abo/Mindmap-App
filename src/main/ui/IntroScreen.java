@@ -2,12 +2,14 @@ package ui;
 
 import javax.swing.*;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import ui.actions.SwapScreenAction;
 
 import java.awt.*;
 
 // Constructs and organizes all the content on the intro screen
 // It is also responsible for hiding itself and showing the mindmap screen when the user clicks
+@ExcludeFromJacocoGeneratedReport
 public class IntroScreen extends JWindow {
     JFrame mindMapFrame;
 

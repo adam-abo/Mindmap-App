@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.*;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.MindMap;
 import model.Node;
 import model.Note;
@@ -19,6 +20,7 @@ import java.awt.geom.Line2D;
  * Other classes that relate to ui, such as actions, usually contain a reference to this class. 
  * However, they cannot directly change any of the fields of this class.
  */
+@ExcludeFromJacocoGeneratedReport
 public class MindMapUI extends JPanel {
 
     private Node node;
