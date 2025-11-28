@@ -2,17 +2,17 @@ package ui.actions;
 
 import java.awt.event.MouseAdapter;
 import javax.swing.JFrame;
-import java.awt.event.MouseEvent;
+import javax.swing.JWindow;
 
-import ui.IntroScreen;
+import java.awt.event.MouseEvent;
 
 // This class represents the actions that occur due to mouse clicks on the intro frame
 public class SwapScreenAction extends MouseAdapter {
-    IntroScreen closeFrame;
+    JWindow closeWindow;
     JFrame openFrame;
 
-    public SwapScreenAction(IntroScreen closeFrame, JFrame openFrame) {
-        this.closeFrame = closeFrame;
+    public SwapScreenAction(JWindow closeWindow, JFrame openFrame) {
+        this.closeWindow = closeWindow;
         this.openFrame = openFrame;
     }
 
@@ -23,10 +23,10 @@ public class SwapScreenAction extends MouseAdapter {
     }
 
     // MODIFIES: this
-    // EFFECTS: closes the intro screen and reveals the MindMap screen
+    // EFFECTS: closes the intro window and reveals the new frame
     private void swap() {
-        closeFrame.setVisible(false);
-        closeFrame.dispose();
+        closeWindow.setVisible(false);
+        closeWindow.dispose();
         openFrame.setVisible(true);
     }
 }

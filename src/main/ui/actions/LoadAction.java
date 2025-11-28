@@ -3,13 +3,11 @@ package ui.actions;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.*;
-import model.MindMap;
 import persistence.JsonReader;
 import ui.MindMapUI;
 
 // Action class for pressing the load button
 public class LoadAction extends AbstractAction {
-    private MindMap mindMap;
     private MindMapUI network;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/mindmap.json";
@@ -24,7 +22,6 @@ public class LoadAction extends AbstractAction {
     // mindMap.getSelected() and mindMap.getgetMovingNote() will be reset
     @Override
     public void actionPerformed(ActionEvent e) {
-        mindMap = network.getMindMap();
         try {
             network.setMindMap(jsonReader.read());
         } catch (IOException ioe) {

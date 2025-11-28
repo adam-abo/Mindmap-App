@@ -23,3 +23,5 @@ This project is made for people who want to use a mind map style of note organiz
 - Cut child node by SHIFT-clicking it.
 - Paste last cut node once by SHIFT-clicking the center node.
 - Edit a node's content by clicking it.
+
+## Phase 4: Task 3

@@ -11,10 +11,8 @@ import java.awt.*;
 // It is also responsible for hiding itself and showing the mindmap screen when the user clicks
 @ExcludeFromJacocoGeneratedReport
 public class IntroScreen extends JWindow {
-    JFrame mindMapFrame;
 
-    public IntroScreen(JFrame frame) {
-        this.mindMapFrame = frame;
+    public IntroScreen() {
         JPanel panel = createMainPanel();
 
         panel.add(Box.createVerticalGlue());
@@ -83,6 +81,6 @@ public class IntroScreen extends JWindow {
     // EFFECTS: adds a mouseListener to detect a user click to swap screens
     public void showUntilClick() {
         setVisible(true);
-        addMouseListener(new SwapScreenAction(this, mindMapFrame));
+        addMouseListener(new SwapScreenAction(this, new MindMapFrame("Mind Map")));
     }
 }

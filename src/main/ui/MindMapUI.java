@@ -23,8 +23,6 @@ import java.awt.geom.Line2D;
 @ExcludeFromJacocoGeneratedReport
 public class MindMapUI extends JPanel {
 
-    private Node node;
-    private List<Note> children;
     private MindMap mindMap;
     private Ellipse2D mainCircle;
     private List<Ellipse2D> childCircles = new ArrayList<>();
@@ -40,11 +38,12 @@ public class MindMapUI extends JPanel {
     // EFFECTS:
     @Override
     protected void paintComponent(Graphics g) {
-        updateNode();
+        childCircles.clear();
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-
+        Node node = mindMap.getSelected();
+        List<Note> children = node.getChildren();
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
         int bigRadius = 70;
@@ -134,25 +133,12 @@ public class MindMapUI extends JPanel {
         return lines;
     }
 
-    // MODIFIES: this
-    // EFFECTS: updates the current node to the most recent selected node.
-    // also resets the information on child nodes/circles.
-    private void updateNode() {
-        this.node = mindMap.getSelected();
-        this.children = node.getChildren();
-        childCircles.clear();
-    }
-
     public void setMindMap(MindMap mindMap) {
         this.mindMap = mindMap;
     }
 
     public MindMap getMindMap() {
         return mindMap;
-    }
-
-    public List<Note> getChildren() {
-        return children;
     }
 
     public Ellipse2D getMainCircle() {
