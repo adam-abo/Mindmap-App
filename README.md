@@ -25,3 +25,4 @@ This project is made for people who want to use a mind map style of note organiz
 - Edit a node's content by clicking it.
 
 ## Phase 4: Task 3
+Looking at the UML diagram, I noticed how many classes have an association with the same single instance of the MindMapUI network, which makes me think that it might be a good idea to refactor MindMapUi to use the singleton pattern. That way, the same instance can be accessed by the other classes with decreased coupling. Another possible refactor that would be useful could be the singleton pattern on the MindMap class too. Just like MindMapUI, only a single instance of it exists, and holds data used by other classes. Lastly, it might be possible to refactor the Node and Note system into a composite pattern. I don't believe this would reduce coupling currently much, but it would help to clean up the system if someone wished to add to it.
