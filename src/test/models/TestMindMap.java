@@ -27,7 +27,7 @@ public class TestMindMap {
     void testConstructor() {
         assertEquals(mm, mm.getSelected());
         assertEquals(0, mm.getChildren().size());
-        assertNull(mm.getContent());
+        assertEquals("My Mindmap", mm.getContent());
         assertNull(mm.getMovingNote());
 
         assertEquals(1, mm.getPath().size());
